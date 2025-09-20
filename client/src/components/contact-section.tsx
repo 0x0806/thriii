@@ -275,7 +275,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Location</div>
-                    <div className="text-muted-foreground">New York • Los Angeles • Miami</div>
+                    <div className="text-muted-foreground">Dubai• Sharjah • UAE</div>
                   </div>
                 </div>
               </div>
