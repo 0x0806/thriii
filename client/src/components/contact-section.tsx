@@ -255,7 +255,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Phone</div>
-                    <div className="text-muted-foreground">+1 (555) THRIII-1</div>
+                    <div className="text-muted-foreground">+971 50 3321 363</div>
                   </div>
                 </div>
                 
