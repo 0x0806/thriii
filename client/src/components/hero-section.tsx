@@ -61,9 +61,9 @@ export function HeroSection() {
               className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 reveal"
               data-testid="hero-title"
             >
-              <span className="block text-gradient">LUXURY</span>
-              <span className="block text-foreground">EVENTS</span>
-              <span className="block text-gradient">REDEFINED</span>
+              <span className="block text-gradient">CRAFTING</span>
+              <span className="block text-foreground">JOYFUL</span>
+              <span className="block text-gradient">MOMENTS</span>
             </h1>
             <p 
               ref={subtitleRef}
