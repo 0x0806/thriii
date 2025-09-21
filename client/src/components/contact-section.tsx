@@ -18,6 +18,8 @@ export function ContactSection() {
     eventType: '',
     message: ''
   });
+  const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
+  const RATE_LIMIT_DELAY = 30000; // 30 seconds between submissions
 
   const headerRef = useScrollReveal<HTMLSpanElement>();
   const subtitleRef = useScrollReveal<HTMLHeadingElement>(100);
@@ -31,6 +33,19 @@ export function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Rate limiting check
+    const currentTime = Date.now();
+    if (currentTime - lastSubmissionTime < RATE_LIMIT_DELAY) {
+      const remainingTime = Math.ceil((RATE_LIMIT_DELAY - (currentTime - lastSubmissionTime)) / 1000);
+      toast({
+        title: 'Please wait',
+        description: `Please wait ${remainingTime} seconds before submitting again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -39,6 +54,7 @@ export function ContactSection() {
       submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
       submitData.append('_captcha', 'true');
       submitData.append('_template', 'table');
+      submitData.append('_next', window.location.href); // Redirect back to same page
       submitData.append('_cc', 'hello@thriiievents.com');
       
       // Add form data with proper field names
@@ -51,12 +67,12 @@ export function ContactSection() {
 
       const response = await fetch('https://formsubmit.co/hello@thriiievents.com', {
         method: 'POST',
-        body: submitData,
-        mode: 'cors'
+        body: submitData
       });
 
-      // FormSubmit redirects on success, so we check for redirect or ok status
-      if (response.ok || response.type === 'opaqueredirect') {
+      // FormSubmit will handle the redirect, so if we reach here, it's likely an error
+      if (response.ok) {
+        setLastSubmissionTime(currentTime);
         toast({
           title: 'Message Sent!',
           description: 'Thank you for your interest. We\'ll get back to you within 2 hours during business hours.',
@@ -206,14 +222,7 @@ export function ContactSection() {
                 </Select>
               </div>
               
-              <div>
-                <Label htmlFor="budget" className="block text-sm font-semibold text-foreground mb-2">
-                  Budget Range
-                </Label>
-                <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
-                  <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-budget">
-                </Select>
-              </div>
+              
               
               <div>
                 <Label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
@@ -233,11 +242,15 @@ export function ContactSection() {
               
               <Button 
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:glow-effect transition-all animate-glow"
+                disabled={isSubmitting || (Date.now() - lastSubmissionTime < RATE_LIMIT_DELAY)}
+                className="w-full bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:glow-effect transition-all animate-glow disabled:opacity-50"
                 data-testid="button-submit"
               >
-                {isSubmitting ? 'Sending...' : 'Start Your Project'} <i className="fas fa-arrow-right ml-2"></i>
+                {isSubmitting ? 'Sending...' : 
+                 (Date.now() - lastSubmissionTime < RATE_LIMIT_DELAY) ? 
+                 `Wait ${Math.ceil((RATE_LIMIT_DELAY - (Date.now() - lastSubmissionTime)) / 1000)}s` : 
+                 'Start Your Project'} 
+                {!isSubmitting && (Date.now() - lastSubmissionTime >= RATE_LIMIT_DELAY) && <i className="fas fa-arrow-right ml-2"></i>}
               </Button>
             </form>
           </div>
