@@ -45,7 +45,7 @@ export function ContactSection() {
         submitData.append(key, value);
       });
 
-      const response = await fetch('https://formsubmit.co/contact@thriiilevents.com', {
+      const response = await fetch('https://formsubmit.co/hello@thriiievents.com', {
         method: 'POST',
         body: submitData
       });
@@ -208,12 +208,6 @@ export function ContactSection() {
                   <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-budget">
                     <SelectValue placeholder="Select Budget Range" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
-                    <SelectItem value="100k-250k">$100,000 - $250,000</SelectItem>
-                    <SelectItem value="250k-500k">$250,000 - $500,000</SelectItem>
-                    <SelectItem value="500k+">$500,000+</SelectItem>
-                  </SelectContent>
                 </Select>
               </div>
               
@@ -265,7 +259,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Email</div>
-                    <div className="text-muted-foreground">hello@thriiilevents.com</div>
+                    <div className="text-muted-foreground">hello@thriiievents.com</div>
                   </div>
                 </div>
                 
@@ -275,7 +269,12 @@ export function ContactSection() {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Location</div>
-                    <div className="text-muted-foreground">Dubai• Sharjah • UAE</div>
+                    <div className="text-muted-foreground">
+                      THRIII EVENTS FZ LLC
+                      AJMAN FREEZONE
+                      SHEIKH RASHID BIN SAEED AL MAKTOUM STREET
+                      AJMAN- UNITED ARAB EMIRATES.
+                  </div>
                   </div>
                 </div>
               </div>
