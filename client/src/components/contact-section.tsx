@@ -277,6 +277,9 @@ export function ContactSection() {
                 <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-linkedin"></i>
                 </a>
+                 <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                  <i className="fab fa-facebook"></i>
+                </a>
                 <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-twitter"></i>
                 </a>
