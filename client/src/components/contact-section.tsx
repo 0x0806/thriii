@@ -16,7 +16,6 @@ export function ContactSection() {
     email: '',
     phone: '',
     eventType: '',
-    budget: '',
     message: ''
   });
 
@@ -38,7 +37,7 @@ export function ContactSection() {
       // Create FormData for FormSubmit
       const submitData = new FormData();
       submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
-      submitData.append('_captcha', 'false');
+      submitData.append('_captcha', 'true');
       submitData.append('_template', 'table');
       submitData.append('_cc', 'hello@thriiievents.com');
       
@@ -70,7 +69,6 @@ export function ContactSection() {
           email: '',
           phone: '',
           eventType: '',
-          budget: '',
           message: ''
         });
       } else {
@@ -214,16 +212,6 @@ export function ContactSection() {
                 </Label>
                 <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
                   <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-budget">
-                    <SelectValue placeholder="Select Budget Range" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="under-10k">Under $10,000</SelectItem>
-                    <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-                    <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-                    <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
-                    <SelectItem value="over-100k">Over $100,000</SelectItem>
-                    <SelectItem value="discuss">Prefer to discuss</SelectItem>
-                  </SelectContent>
                 </Select>
               </div>
               
