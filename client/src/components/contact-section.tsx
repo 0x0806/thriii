@@ -52,7 +52,7 @@ export function ContactSection() {
       // Create FormData for FormSubmit
       const submitData = new FormData();
       submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
-      submitData.append('_captcha', 'true');
+      submitData.append('_captcha', 'false');
       submitData.append('_template', 'table');
       submitData.append('_next', window.location.href); // Redirect back to same page
       submitData.append('_cc', 'hello@thriiievents.com');
