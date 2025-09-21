@@ -53,37 +53,37 @@ export function ServicesSection() {
       icon: "fas fa-lightbulb",
       title: "Lighting Design",
       description:
-        "Professional lighting design services in Dubai and UAE featuring cutting-edge LED technology, architectural lighting, and dynamic mood lighting. Our expert lighting designers create stunning visual experiences for corporate events, weddings, and luxury celebrations with intelligent lighting systems that synchronize with music and movement.",
+        "Transform any space with our cutting-edge lighting solutions. From ambient mood lighting to dynamic LED installations that respond to music and movement.",
     },
     {
       icon: "fas fa-calendar-alt",
       title: "Event Management",
       description:
-        "Full-service event management company in UAE providing end-to-end event planning, coordination, and execution services. From venue selection and vendor management to timeline coordination and day-of logistics, we ensure flawless luxury events, corporate conferences, and private celebrations across Dubai, Abu Dhabi, and the Middle East.",
+        "Complete event planning and coordination services. We handle every detail from venue selection to vendor management, ensuring flawless execution.",
     },
     {
       icon: "fas fa-video",
       title: "Themed Decorations",
       description:
-        "Premium themed decoration and audio-visual production services featuring projection mapping, live streaming, immersive sound systems, and custom stage design. We create spectacular themed environments for galas, product launches, fashion shows, and brand activations with state-of-the-art AV technology and creative staging solutions.",
+        "State-of-the-art audio-visual production services including live streaming, projection mapping, and immersive sound systems.",
     },
     {
       icon: "fas fa-palette",
       title: "Creative Design",
       description:
-        "Award-winning creative design and artistic direction services for luxury events in Dubai. Our team specializes in conceptual event design, custom installations, branded environments, and artistic elements that transform venues into extraordinary experiential spaces. From concept visualization to 3D design and execution.",
+        "Conceptual design and creative direction that brings your vision to life. Custom installations, themed environments, and artistic elements.",
     },
     {
       icon: "fas fa-building",
       title: "Seasonal Festivals",
       description:
-        "Comprehensive seasonal festival and large-scale event production services including music festivals, cultural celebrations, holiday events, and outdoor festivals in UAE. We provide complete festival management from logistics and security to entertainment booking, vendor coordination, and crowd management for unforgettable seasonal experiences.",
+        "Professional corporate event solutions including conferences, product launches, galas, and team building experiences.",
     },
     {
       icon: "fas fa-heart",
       title: "Weddings",
       description:
-        "Luxury wedding planning and design services in Dubai offering bespoke wedding coordination, destination wedding management, and personalized celebration design. From intimate beachfront ceremonies to grand ballroom receptions, we create magical wedding experiences with custom décor, floral design, and complete wedding day coordination.",
+        "Bespoke wedding planning and design services that create magical moments. From intimate ceremonies to grand celebrations.",
     },
   ];
 
