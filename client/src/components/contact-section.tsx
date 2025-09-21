@@ -39,18 +39,25 @@ export function ContactSection() {
       const submitData = new FormData();
       submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
       submitData.append('_captcha', 'false');
-      submitData.append('_next', window.location.origin + '/thank-you');
+      submitData.append('_template', 'table');
+      submitData.append('_cc', 'hello@thriiievents.com');
       
-      Object.entries(formData).forEach(([key, value]) => {
-        submitData.append(key, value);
-      });
+      // Add form data with proper field names
+      submitData.append('First Name', formData.firstName);
+      submitData.append('Last Name', formData.lastName);
+      submitData.append('Email', formData.email);
+      submitData.append('Phone', formData.phone);
+      submitData.append('Event Type', formData.eventType);
+      submitData.append('Project Details', formData.message);
 
       const response = await fetch('https://formsubmit.co/hello@thriiievents.com', {
         method: 'POST',
-        body: submitData
+        body: submitData,
+        mode: 'cors'
       });
 
-      if (response.ok) {
+      // FormSubmit redirects on success, so we check for redirect or ok status
+      if (response.ok || response.type === 'opaqueredirect') {
         toast({
           title: 'Message Sent!',
           description: 'Thank you for your interest. We\'ll get back to you within 2 hours during business hours.',
@@ -70,6 +77,7 @@ export function ContactSection() {
         throw new Error('Failed to submit form');
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: 'Error',
         description: 'There was a problem sending your message. Please try again or contact us directly.',
@@ -196,6 +204,25 @@ export function ContactSection() {
                     <SelectItem value="fashion">Fashion Show</SelectItem>
                     <SelectItem value="private">Private Party</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label htmlFor="budget" className="block text-sm font-semibold text-foreground mb-2">
+                  Budget Range
+                </Label>
+                <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
+                  <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-budget">
+                    <SelectValue placeholder="Select Budget Range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="under-10k">Under $10,000</SelectItem>
+                    <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
+                    <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
+                    <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
+                    <SelectItem value="over-100k">Over $100,000</SelectItem>
+                    <SelectItem value="discuss">Prefer to discuss</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
