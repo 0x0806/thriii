@@ -261,7 +261,7 @@ export function ContactSection() {
                     <div className="text-muted-foreground">
                       AJMAN FREEZONE
                       SHEIKH RASHID BIN SAEED AL MAKTOUM STREET
-                      AJMAN- UNITED ARAB EMIRATES.
+                      AJMAN- UAE
                   </div>
                   </div>
                 </div>
