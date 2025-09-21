@@ -259,7 +259,6 @@ export function ContactSection() {
                   <div>
                     <div className="font-semibold text-foreground">Location</div>
                     <div className="text-muted-foreground">
-                      THRIII EVENTS FZ LLC
                       AJMAN FREEZONE
                       SHEIKH RASHID BIN SAEED AL MAKTOUM STREET
                       AJMAN- UNITED ARAB EMIRATES.
