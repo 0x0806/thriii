@@ -48,58 +48,57 @@ export function ContactSection() {
 
     setIsSubmitting(true);
 
-    try {
-      // Create FormData for FormSubmit
-      const submitData = new FormData();
-      submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
-      submitData.append('_captcha', 'false');
-      submitData.append('_template', 'table');
-      submitData.append('_next', window.location.href); // Redirect back to same page
-      submitData.append('_cc', 'hello@thriiievents.com');
-      
-      // Add form data with proper field names
-      submitData.append('First Name', formData.firstName);
-      submitData.append('Last Name', formData.lastName);
-      submitData.append('Email', formData.email);
-      submitData.append('Phone', formData.phone);
-      submitData.append('Event Type', formData.eventType);
-      submitData.append('Project Details', formData.message);
+    // Create a hidden form for FormSubmit submission
+    const form = document.createElement('form');
+    form.action = 'https://formsubmit.co/hello@thriiievents.com';
+    form.method = 'POST';
+    form.style.display = 'none';
 
-      // Set success state before submission since FormSubmit will redirect
-      setLastSubmissionTime(currentTime);
-      toast({
-        title: 'Submitting...',
-        description: 'Your message is being sent. You will be redirected shortly.',
-      });
-      
-      // Reset form immediately
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        eventType: '',
-        message: ''
-      });
+    // Add FormSubmit configuration
+    const fields = [
+      { name: '_subject', value: 'New Contact Form Submission - THRIII Events' },
+      { name: '_captcha', value: 'false' },
+      { name: '_template', value: 'table' },
+      { name: '_next', value: window.location.href },
+      { name: '_cc', value: 'hello@thriiievents.com' },
+      { name: 'First Name', value: formData.firstName },
+      { name: 'Last Name', value: formData.lastName },
+      { name: 'Email', value: formData.email },
+      { name: 'Phone', value: formData.phone },
+      { name: 'Event Type', value: formData.eventType },
+      { name: 'Project Details', value: formData.message }
+    ];
 
-      // Submit to FormSubmit (this will cause a redirect)
-      await fetch('https://formsubmit.co/hello@thriiievents.com', {
-        method: 'POST',
-        body: submitData
-      });
-    } catch (error) {
-      // Only show error for actual network failures, not FormSubmit redirects
-      console.error('Form submission error:', error);
-      // Reset the submission time if there was a real error
-      setLastSubmissionTime(0);
-      toast({
-        title: 'Error',
-        description: 'There was a problem sending your message. Please check your internet connection and try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    fields.forEach(field => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = field.name;
+      input.value = field.value;
+      form.appendChild(input);
+    });
+
+    // Set success state before submission
+    setLastSubmissionTime(currentTime);
+    toast({
+      title: 'Message Sent Successfully!',
+      description: 'Thank you for your inquiry. We will get back to you within 2 hours during business hours.',
+    });
+    
+    // Reset form
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      eventType: '',
+      message: ''
+    });
+
+    // Submit the form (this will cause a redirect, but we've already shown success)
+    document.body.appendChild(form);
+    form.submit();
+    
+    setIsSubmitting(false);
   };
 
   return (
