@@ -201,17 +201,6 @@ export function ContactSection() {
               </div>
               
               <div>
-                <Label htmlFor="budget" className="block text-sm font-semibold text-foreground mb-2">
-                  Estimated Budget
-                </Label>
-                <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
-                  <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-budget">
-                    <SelectValue placeholder="Select Budget Range" />
-                  </SelectTrigger>
-                </Select>
-              </div>
-              
-              <div>
                 <Label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
                   Project Details
                 </Label>
