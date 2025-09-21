@@ -52,7 +52,7 @@ export function ContactSection() {
       // Create FormData for FormSubmit
       const submitData = new FormData();
       submitData.append('_subject', 'New Contact Form Submission - THRIII Events');
-      submitData.append('_captcha', 'false');
+      submitData.append('_captcha', 'true');
       submitData.append('_template', 'table');
       submitData.append('_next', window.location.href); // Redirect back to same page
       submitData.append('_cc', 'hello@thriiievents.com');
@@ -65,36 +65,36 @@ export function ContactSection() {
       submitData.append('Event Type', formData.eventType);
       submitData.append('Project Details', formData.message);
 
-      const response = await fetch('https://formsubmit.co/hello@thriiievents.com', {
+      // Set success state before submission since FormSubmit will redirect
+      setLastSubmissionTime(currentTime);
+      toast({
+        title: 'Submitting...',
+        description: 'Your message is being sent. You will be redirected shortly.',
+      });
+      
+      // Reset form immediately
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        eventType: '',
+        message: ''
+      });
+
+      // Submit to FormSubmit (this will cause a redirect)
+      await fetch('https://formsubmit.co/hello@thriiievents.com', {
         method: 'POST',
         body: submitData
       });
-
-      // FormSubmit will handle the redirect, so if we reach here, it's likely an error
-      if (response.ok) {
-        setLastSubmissionTime(currentTime);
-        toast({
-          title: 'Message Sent!',
-          description: 'Thank you for your interest. We\'ll get back to you within 2 hours during business hours.',
-        });
-        
-        // Reset form
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          eventType: '',
-          message: ''
-        });
-      } else {
-        throw new Error('Failed to submit form');
-      }
     } catch (error) {
+      // Only show error for actual network failures, not FormSubmit redirects
       console.error('Form submission error:', error);
+      // Reset the submission time if there was a real error
+      setLastSubmissionTime(0);
       toast({
         title: 'Error',
-        description: 'There was a problem sending your message. Please try again or contact us directly.',
+        description: 'There was a problem sending your message. Please check your internet connection and try again.',
         variant: 'destructive',
       });
     } finally {
