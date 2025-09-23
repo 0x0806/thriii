@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { BrochureDownload } from '@/components/brochure-download';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -78,6 +79,15 @@ export function Navigation() {
               >
                 Testimonials
               </button>
+              <BrochureDownload>
+                <Button 
+                  className="bg-secondary text-secondary-foreground px-4 py-2 rounded-full hover:glow-effect transition-all font-semibold text-sm"
+                  data-testid="nav-brochure"
+                >
+                  <i className="fas fa-download mr-1"></i>
+                  Brochure
+                </Button>
+              </BrochureDownload>
               <Button 
                 onClick={() => scrollToSection('contact')}
                 className="bg-primary text-primary-foreground px-6 py-2 rounded-full hover:glow-effect transition-all font-semibold"
@@ -150,6 +160,15 @@ export function Navigation() {
             >
               Testimonials
             </button>
+            <BrochureDownload>
+              <Button 
+                className="block bg-secondary text-secondary-foreground px-6 py-3 rounded-full text-center font-semibold mt-6 w-full"
+                data-testid="mobile-nav-brochure"
+              >
+                <i className="fas fa-download mr-2"></i>
+                Download Brochure
+              </Button>
+            </BrochureDownload>
             <Button 
               onClick={() => scrollToSection('contact')}
               className="block bg-primary text-primary-foreground px-6 py-3 rounded-full text-center font-semibold mt-8 w-full"

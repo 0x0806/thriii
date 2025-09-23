@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import { BrochureDownload } from '@/components/brochure-download';
 
 export function HeroSection() {
   const titleRef = useScrollReveal<HTMLHeadingElement>(200);
@@ -92,6 +93,16 @@ export function HeroSection() {
               >
                 Start Your Project
               </Button>
+              <BrochureDownload>
+                <Button 
+                  variant="outline"
+                  className="border border-secondary text-secondary px-8 py-4 rounded-full font-semibold text-lg hover:bg-secondary hover:text-secondary-foreground transition-all"
+                  data-testid="button-download-brochure"
+                >
+                  <i className="fas fa-download mr-2"></i>
+                  Download Brochure
+                </Button>
+              </BrochureDownload>
             </div>
           </div>
         </div>

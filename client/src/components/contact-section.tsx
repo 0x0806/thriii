@@ -298,19 +298,16 @@ export function ContactSection() {
             <div>
               <h3 className="text-2xl font-display font-semibold text-foreground mb-6">Follow Us</h3>
               <div className="flex space-x-4" data-testid="social-links">
-                <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                <a href="https://www.instagram.com/thriiievents/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-instagram"></i>
                 </a>
-                <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                <a href="https://www.linkedin.com/in/thriii-events-fz-llc-344307386/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-linkedin"></i>
                 </a>
-                 <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-facebook"></i>
+                <a href="https://www.tiktok.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                  <i className="fab fa-tiktok"></i>
                 </a>
-                <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a href="#" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                <a href="https://www.youtube.com/@THRIIIEVENTSFZLLC" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-youtube"></i>
                 </a>
               </div>

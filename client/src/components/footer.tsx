@@ -172,19 +172,16 @@ export function Footer() {
               © 2025 THRIII Events. All rights reserved.
             </div>
             <div className="flex space-x-6" data-testid="footer-social">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-facebook"></i>
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.instagram.com/thriiievents/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/in/thriii-events-fz-llc-344307386/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-linkedin"></i>
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-twitter"></i>
+              <a href="https://www.tiktok.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <i className="fab fa-tiktok"></i>
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.youtube.com/@THRIIIEVENTSFZLLC" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-youtube"></i>
               </a>
             </div>
