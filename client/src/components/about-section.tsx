@@ -35,7 +35,7 @@ function Counter({ target, label }: CounterProps) {
 
   return (
     <div ref={ref} className="text-center" data-testid={`counter-${label.toLowerCase().replace(/\s+/g, '-')}`}>
-      <div className="counter text-4xl lg:text-5xl font-bold text-primary">{count}</div>
+      <div className="counter text-4xl lg:text-5xl font-bold text-primary">{count}+</div>
       <div className="text-sm text-muted-foreground uppercase tracking-wider mt-2">{label}</div>
     </div>
   );

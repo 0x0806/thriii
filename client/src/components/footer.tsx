@@ -13,8 +13,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-2 mb-4" data-testid="footer-logo">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <i className="fas fa-bolt text-primary-foreground text-xl"></i>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                <img src="/LOGO.jpg" alt="THRIII Events Logo" className="w-12 h-12 rounded-lg object-cover" />
               </div>
               <span className="text-2xl font-accent font-semibold text-gradient">THRIII</span>
               <span className="text-sm text-muted-foreground font-body uppercase tracking-wider">EVENTS</span>

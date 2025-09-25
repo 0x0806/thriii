@@ -154,35 +154,30 @@ export function PortfolioSection() {
         
         {/* Portfolio Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="portfolio-grid">
-          {filteredItems.map((item, index) => {
-            const itemRef = useScrollReveal<HTMLDivElement>(400 + (index * 100));
-            
-            return (
-              <div 
-                key={item.id}
-                ref={itemRef}
-                className="gallery-item reveal stagger cursor-pointer"
-                onClick={() => setLightboxImage({ src: item.image, alt: item.title })}
-                data-testid={`portfolio-item-${item.id}`}
-              >
-                <div className="relative group overflow-hidden rounded-2xl">
-                  <img 
-                    src={item.image} 
-                    alt={item.title}
-                    className="w-full h-64 object-cover transition-transform group-hover:scale-110"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
-                    <div className="text-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-sm">{item.subtitle}</p>
-                      <i className="fas fa-expand text-2xl mt-4"></i>
-                    </div>
+          {filteredItems.map((item, index) => (
+            <div 
+              key={item.id}
+              className="gallery-item cursor-pointer"
+              onClick={() => setLightboxImage({ src: item.image, alt: item.title })}
+              data-testid={`portfolio-item-${item.id}`}
+            >
+              <div className="relative group overflow-hidden rounded-2xl">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-64 object-cover transition-transform group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
+                  <div className="text-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                    <p className="text-sm">{item.subtitle}</p>
+                    <i className="fas fa-expand text-2xl mt-4"></i>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
 
