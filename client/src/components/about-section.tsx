@@ -77,9 +77,9 @@ export function AboutSection() {
             
             {/* Animated Counters */}
             <div ref={countersRef} className="grid grid-cols-3 gap-8 pt-8 reveal" data-testid="about-counters">
-              <Counter target={500} label="Events Created" />
-              <Counter target={50} label="Countries Served" />
-              <Counter target={15} label="Years Experience" />
+              <Counter target={500+} label="Events" />
+              <Counter target={50+} label="Esteemed Clients" />
+              <Counter target={15+} label="years experienced professionals" />
             </div>
           </div>
           
