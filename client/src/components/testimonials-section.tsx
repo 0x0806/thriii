@@ -21,23 +21,23 @@ export function TestimonialsSection() {
     {
       id: '1',
       quote: "THRIII Events transformed our annual gala into an absolutely magical experience. The lighting design was breathtaking, and every detail was executed flawlessly. Our guests are still talking about it months later.",
-      name: "Sarah Johnson",
-      title: "CEO, Global Tech Solutions",
-      initials: "SJ"
+      name: "J. Gomes",
+      title: "GM, Pedrollo U.A.E",
+      initials: "JG"
     },
     {
       id: '2',
       quote: "Working with THRIII Events on our wedding was the best decision we made. They brought our dream vision to life and created the most romantic, elegant atmosphere. Truly exceptional service.",
       name: "Michael & Rachel",
-      title: "Celebrity Couple",
+      title: " ",
       initials: "MR"
     },
     {
       id: '3',
       quote: "The production quality and attention to detail from THRIII Events is unmatched. They handled our international product launch with such professionalism and creativity. Simply outstanding.",
-      name: "David Lee",
-      title: "VP Marketing, Luxury Brands Inc.",
-      initials: "DL"
+      name: "V. Sagar",
+      title: "Manager, Linden Shipping",
+      initials: "VS"
     }
   ];
 
