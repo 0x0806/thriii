@@ -29,7 +29,7 @@ export function TestimonialsSection() {
       id: '2',
       quote: "Working with THRIII Events on our wedding was the best decision we made. They brought our dream vision to life and created the most romantic, elegant atmosphere. Truly exceptional service.",
       name: "Michael & Rachel",
-      title: "Couple",
+     
       initials: "MR"
     },
     {
