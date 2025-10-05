@@ -64,7 +64,7 @@ export function AboutSection() {
               ref={contentRef1}
               className="text-lg text-muted-foreground leading-relaxed reveal"
               data-testid="about-paragraph-1">
-               We transform spaces into immersive experiences that captivate, inspire, and leave lasting impressions.
+             THRIII Events is a leading luxury event management company specializing in innovative lighting design and bespoke event solutions. We transform venues into immersive event experiences that inspire, captivate, and create unforgettable memories. With expertise in premium event planning, elegant decor, and creative event lighting, THRIII Events delivers high-end weddings, corporate events, and private celebrations that leave lasting impressions.
             </p>
             <p 
               ref={contentRef2}
