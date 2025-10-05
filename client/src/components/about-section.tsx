@@ -65,7 +65,7 @@ export function AboutSection() {
               className="text-lg text-muted-foreground leading-relaxed reveal"
               data-testid="about-paragraph-1"
             >
-              For over a decade, THRIII Events has been at the forefront of luxury event management and innovative lighting design. We transform spaces into immersive experiences that captivate, inspire, and leave lasting impressions.
+               THRIII Events has been at the forefront of luxury event management and innovative lighting design. We transform spaces into immersive experiences that captivate, inspire, and leave lasting impressions.
             </p>
             <p 
               ref={contentRef2}
