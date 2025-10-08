@@ -314,6 +314,9 @@ export function ContactSection() {
                     <a href="https://x.com/thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
                   <i className="fab fa-x"></i>
                 </a>
+                <a href="https://www.threads.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
+                  <i className="fab fa-threads"></i>
+                </a>
               </div>
             </div>
             
