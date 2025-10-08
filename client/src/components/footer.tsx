@@ -183,8 +183,12 @@ export function Footer() {
               </a>
               <a href="https://www.youtube.com/@THRIIIEVENTSFZLLC" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-youtube"></i>
+                 </a>
                 <a href="https://www.facebook.com/profile.php?id=61581765570460" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <i className="fab fa-facebook"></i>
+              </a>
+              <a href="https://x.com/thriiievents" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <i className="fab fa-x"></i>
               </a>
             </div>
           </div>
