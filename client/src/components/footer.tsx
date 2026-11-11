@@ -1,197 +1,94 @@
-export function Footer() {
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { SocialLinks } from "@/components/social-icon";
+import { SITE } from "@/lib/site";
 
+const CREDITS = [
+  {
+    work: "Drummer performing on stage during a live music concert",
+    by: "Shixart1985",
+    licence: "CC BY 2.0",
+    licenceUrl: "https://creativecommons.org/licenses/by/2.0",
+    page: "https://commons.wikimedia.org/wiki/File:Drummer_performing_on_stage_during_a_live_music_concert_at_night_with_dynamic_lighting_effects.jpg",
+  },
+  {
+    work: "Musician performs on stage during a lively concert",
+    by: "Shixart1985",
+    licence: "CC BY 2.0",
+    licenceUrl: "https://creativecommons.org/licenses/by/2.0",
+    page: "https://commons.wikimedia.org/wiki/File:Musician_performs_on_stage_during_a_lively_concert_with_dramatic_lighting_at_night.jpg",
+  },
+  {
+    work: "Recording a concert",
+    by: "veeterzy",
+    licence: "CC0",
+    licenceUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+    page: "https://commons.wikimedia.org/wiki/File:Recording_a_concert_(Unsplash).jpg",
+  },
+];
+
+export function Footer() {
   return (
-    <footer className="bg-card border-t border-border py-12" data-testid="footer">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center space-x-2 mb-4" data-testid="footer-logo">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
-                <img src="/LOGO.jpg" alt="THRIII Events Logo" className="w-12 h-12 rounded-lg object-cover" />
-              </div>
-              <span className="text-2xl font-accent font-semibold text-gradient">THRIII</span>
-              <span className="text-sm text-muted-foreground font-body uppercase tracking-wider">EVENTS</span>
-            </div>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Transforming visions into extraordinary experiences through world-class event management and innovative lighting design.
-            </p>
+    <footer className="site-footer" data-testid="footer">
+      <div className="wrap">
+        <div className="footer-grid">
+          <div data-testid="footer-logo">
+            <a href="#home" className="wordmark" aria-label="THRIII Events, back to the top">
+              THRIII<small>Events</small>
+            </a>
+            <p className="mt-4 max-w-[38ch] font-display text-xl text-foreground">Crafting Joyful Moments</p>
+            <p className="mt-3 max-w-[40ch] text-sm text-muted-foreground">{SITE.address}</p>
           </div>
-          
-          {/* Services */}
+
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Services</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-lighting"
-                >
-                  Lighting Design
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-management"
-                >
-                  Event Management
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-av"
-                >
-                  AV Production
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-creative"
-                >
-                  Creative Design
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-corporate"
-                >
-                  Corporate Events
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-service-weddings"
-                >
-                  Luxury Weddings
-                </button>
-              </li>
+            <p className="footer-title">Explore</p>
+            <ul>
+              <li><a href="#about" className="link-draw" data-testid="footer-about">About</a></li>
+              <li><a href="#services" className="link-draw">Services</a></li>
+              <li><a href="#portfolio" className="link-draw" data-testid="footer-portfolio">Portfolio</a></li>
+              <li><a href="#testimonials" className="link-draw" data-testid="footer-testimonials">Testimonials</a></li>
+              <li><a href="#contact" className="link-draw" data-testid="footer-contact">Contact</a></li>
             </ul>
           </div>
-          
-          {/* Company */}
+
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Company</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <button 
-                  onClick={() => scrollToSection('about')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-about"
-                >
-                  About Us
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('portfolio')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-portfolio"
-                >
-                  Portfolio
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('testimonials')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-testimonials"
-                >
-                  Testimonials
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('contact')} 
-                  className="hover:text-primary transition-colors"
-                  data-testid="footer-contact"
-                >
-                  Contact
-                </button>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-careers">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-press">
-                  Press
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          {/* Legal */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-privacy">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-terms">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-cookies">
-                  Cookie Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="footer-disclaimer">
-                  Disclaimer
-                </a>
-              </li>
-            </ul>
+            <p className="footer-title">Follow</p>
+            <SocialLinks />
           </div>
         </div>
-        
-        <div className="border-t border-border pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm text-muted-foreground mb-4 md:mb-0" data-testid="footer-copyright">
-              © 2025 THRIII Events. All rights reserved.
-            </div>
-            <div className="flex space-x-6" data-testid="footer-social">
-              <a href="https://www.instagram.com/thriiievents/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/thriii-events-fz-llc-344307386/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-linkedin"></i>
-              </a>
-              <a href="https://www.tiktok.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-tiktok"></i>
-              </a>
-              <a href="https://www.youtube.com/@THRIIIEVENTSFZLLC" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-youtube"></i>
-                 </a>
-                <a href="https://www.facebook.com/profile.php?id=61581765570460" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-facebook"></i>
-              </a>
-              <a href="https://x.com/thriiievents" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                <i className="fab fa-x"></i>
-              </a>
-            </div>
-          </div>
+
+        <div className="footer-base">
+          <span data-testid="footer-copyright">© {new Date().getFullYear()} THRIII Events FZ LLC</span>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button type="button" className="link-draw cursor-pointer border-0 bg-transparent p-0 font-[inherit] text-[inherit]">
+                Photographs via Unsplash and Wikimedia Commons
+              </button>
+            </DialogTrigger>
+            <DialogContent className="border-border bg-background sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="font-display text-2xl font-normal">Photograph credits</DialogTitle>
+                <DialogDescription>
+                  Stand-in photographs, to be replaced with the studio's own event photography.
+                </DialogDescription>
+              </DialogHeader>
+              <ul className="grid gap-4 text-sm">
+                {CREDITS.map((c) => (
+                  <li key={c.page}>
+                    <a href={c.page} target="_blank" rel="noopener noreferrer" className="link-draw text-foreground">
+                      {c.work}
+                    </a>
+                    <span className="block text-muted-foreground">
+                      {c.by},{" "}
+                      <a href={c.licenceUrl} target="_blank" rel="noopener noreferrer" className="link-draw">
+                        {c.licence}
+                      </a>
+                    </span>
+                  </li>
+                ))}
+                <li className="text-muted-foreground">Other photographs from Unsplash, used under the Unsplash licence.</li>
+              </ul>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </footer>

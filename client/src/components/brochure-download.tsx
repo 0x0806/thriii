@@ -1,181 +1,85 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { SITE, asset, sendLead } from "@/lib/site";
 
 interface BrochureDownloadProps {
-  children?: React.ReactNode;
-  className?: string;
+  children: React.ReactNode;
 }
 
-export function BrochureDownload({ children, className }: BrochureDownloadProps) {
-  const { toast } = useToast();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: ''
-  });
+function startDownload() {
+  const link = document.createElement("a");
+  link.href = asset("brochure.pdf");
+  link.download = "THRIII-Events-Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+export function BrochureDownload({ children }: BrochureDownloadProps) {
+  const [open, setOpen] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Create a hidden form for FormSubmit submission
-    const form = document.createElement('form');
-    form.action = 'https://formsubmit.co/hello@thriiievents.com';
-    form.method = 'POST';
-    form.style.display = 'none';
-
-    // Add FormSubmit configuration
-    const fields = [
-      { name: '_subject', value: 'Brochure Download Request - THRIII Events' },
-      { name: '_captcha', value: 'false' },
-      { name: '_template', value: 'table' },
-      { name: '_next', value: window.location.href },
-      { name: '_cc', value: 'hello@thriiievents.com' },
-      { name: 'Name', value: formData.name },
-      { name: 'Email', value: formData.email },
-      { name: 'Phone', value: formData.phone },
-      { name: 'Request Type', value: 'Brochure Download' }
-    ];
-
-    fields.forEach(field => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = field.name;
-      input.value = field.value;
-      form.appendChild(input);
+    const data = new FormData(e.currentTarget);
+    if (data.get("_honey")) return;
+    setSending(true);
+    setNote(null);
+    const ok = await sendLead({
+      _subject: "Brochure download request - THRIII Events",
+      Name: String(data.get("name") ?? ""),
+      Email: String(data.get("email") ?? ""),
+      Phone: String(data.get("phone") ?? ""),
+      "Request type": "Brochure download",
     });
-
-    // Show success message and trigger download
-    toast({
-      title: 'Brochure Download Started!',
-      description: 'Thank you for your interest! Your brochure download will begin shortly.',
-    });
-    
-    // Reset form and close modal
-    setFormData({ name: '', email: '', phone: '' });
-    setIsOpen(false);
-
-    // Submit the form for email notification
-    document.body.appendChild(form);
-    form.submit();
-    
-    // Trigger brochure download (placeholder - you can replace with actual PDF link)
-    setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = '/brochure.pdf'; // You'll need to add the actual brochure PDF to public folder
-      link.download = 'THRIII-Events-Brochure.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }, 1000);
-    
-    setIsSubmitting(false);
-  };
+    setSending(false);
+    // The brochure is never held back: the details are a courtesy, the file is the point.
+    startDownload();
+    if (ok) {
+      setOpen(false);
+    } else {
+      setNote(`Your download has started. We could not send your details, so please email ${SITE.email} if you would like us to follow up.`);
+    }
+  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {children || (
-          <Button 
-            className={`bg-gradient-to-r from-primary to-secondary text-primary-foreground px-6 py-3 rounded-full font-semibold hover:glow-effect transition-all ${className}`}
-          >
-            <i className="fas fa-download mr-2"></i>
-            Download Brochure
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-background border border-border">
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (!o) setNote(null);
+      }}
+    >
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="border-border bg-background sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-display font-semibold text-foreground flex items-center">
-            <i className="fas fa-file-download mr-3 text-primary"></i>
-            Download Our Brochure
-          </DialogTitle>
+          <DialogTitle className="font-display text-2xl font-normal">Download our brochure</DialogTitle>
+          <DialogDescription>Leave your details and the PDF downloads straight away.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-          <p className="text-muted-foreground text-sm">
-            Get our comprehensive brochure showcasing our premium event management and lighting design services.
-          </p>
-          
-          <div>
-            <Label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
-              Full Name *
-            </Label>
-            <Input
-              id="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-              placeholder="John Doe"
-            />
+        <form onSubmit={onSubmit} className="mt-2 grid gap-5">
+          <div className="field">
+            <label htmlFor="b-name">Full name</label>
+            <input id="b-name" name="name" className="control" type="text" required autoComplete="name" />
           </div>
-          
-          <div>
-            <Label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-              Email Address *
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-              placeholder="john@company.com"
-            />
+          <div className="field">
+            <label htmlFor="b-email">Email address</label>
+            <input id="b-email" name="email" className="control" type="email" required autoComplete="email" />
           </div>
-          
-          <div>
-            <Label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
-              Phone Number
-            </Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-              className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-              placeholder="+1 (555) 123-4567"
-            />
+          <div className="field">
+            <label htmlFor="b-phone">Phone number</label>
+            <input id="b-phone" name="phone" className="control" type="tel" autoComplete="tel" />
           </div>
-          
-          <div className="flex gap-3 pt-4">
-            <Button 
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:glow-effect transition-all"
-            >
-              {isSubmitting ? (
-                <>
-                  <i className="fas fa-spinner animate-spin mr-2"></i>
-                  Preparing Download...
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-download mr-2"></i>
-                  Download Now
-                </>
-              )}
-            </Button>
-            <Button 
-              type="button"
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-              className="px-6 py-3 rounded-lg font-semibold border-border"
-            >
-              Cancel
-            </Button>
+          <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+          <button type="submit" className="btn btn-primary" disabled={sending}>
+            {sending ? "Preparing…" : "Download brochure"}
+          </button>
+          <div role="status" aria-live="polite">
+            {note && (
+              <p className="form-status" data-kind="ok">
+                {note}
+              </p>
+            )}
           </div>
         </form>
       </DialogContent>

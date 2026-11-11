@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.taste-skill/
+shots/
+.env
+.env.*
+.DS_Store

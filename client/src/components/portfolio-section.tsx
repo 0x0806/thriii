@@ -1,192 +1,91 @@
-import { useState } from 'react';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { photos, type Photo } from "@/lib/photos";
 
-interface PortfolioItem {
-  id: string;
-  category: string;
-  title: string;
-  subtitle: string;
-  image: string;
-}
+type Category = "corporate" | "wedding" | "concert";
 
-interface LightboxProps {
-  isOpen: boolean;
-  imageSrc: string;
-  imageAlt: string;
-  onClose: () => void;
-}
+const ITEMS: { id: string; category: Category; photo: Photo }[] = [
+  { id: "1", category: "corporate", photo: photos.hall },
+  { id: "2", category: "wedding", photo: photos.bouquet },
+  { id: "3", category: "concert", photo: photos.crowd },
+  { id: "4", category: "corporate", photo: photos.audience },
+  { id: "5", category: "wedding", photo: photos.banquet },
+  { id: "6", category: "concert", photo: photos.stage },
+];
 
-function Lightbox({ isOpen, imageSrc, imageAlt, onClose }: LightboxProps) {
-  if (!isOpen) return null;
-
-  return (
-    <div 
-      className={`lightbox ${isOpen ? 'active' : ''}`}
-      onClick={onClose}
-      data-testid="portfolio-lightbox"
-    >
-      <div className="relative">
-        <img 
-          src={imageSrc} 
-          alt={imageAlt} 
-          className="max-w-full max-h-full rounded-lg"
-          onClick={(e) => e.stopPropagation()}
-        />
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 text-white text-3xl hover:text-primary"
-          data-testid="lightbox-close"
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-  );
-}
+const FILTERS: { key: "all" | Category; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "corporate", label: "Corporate" },
+  { key: "wedding", label: "Weddings" },
+  { key: "concert", label: "Concerts" },
+];
 
 export function PortfolioSection() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
-  
-  const headerRef = useScrollReveal<HTMLSpanElement>();
-  const subtitleRef = useScrollReveal<HTMLHeadingElement>(100);
-  const descriptionRef = useScrollReveal<HTMLParagraphElement>(200);
-  const filtersRef = useScrollReveal<HTMLDivElement>(300);
-
-  const portfolioItems: PortfolioItem[] = [
-    {
-      id: '1',
-      category: 'corporate',
-      title: 'Corporate Gala',
-      subtitle: 'Fortune 500 Company',
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-    {
-      id: '2',
-      category: 'wedding',
-      title: 'Luxury Wedding',
-      subtitle: 'Celebrity Couple',
-      image: 'https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-    {
-      id: '3',
-      category: 'concert',
-      title: 'Music Festival',
-      subtitle: 'International Artist',
-      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-    {
-      id: '4',
-      category: 'fashion',
-      title: 'Fashion Week',
-      subtitle: 'Paris Collection',
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-    {
-      id: '5',
-      category: 'corporate',
-      title: 'Product Launch',
-      subtitle: 'Tech Innovation',
-      image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-    {
-      id: '6',
-      category: 'wedding',
-      title: 'Garden Wedding',
-      subtitle: 'Vineyard Celebration',
-      image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600',
-    },
-  ];
-
-  const filteredItems = activeFilter === 'all' 
-    ? portfolioItems 
-    : portfolioItems.filter(item => item.category === activeFilter);
-
-  const filters = [
-    { key: 'all', label: 'All' },
-    { key: 'corporate', label: 'Corporate' },
-    { key: 'wedding', label: 'Weddings' },
-    { key: 'concert', label: 'Concerts' },
-    { key: 'fashion', label: 'Fashion' },
-  ];
+  const [filter, setFilter] = useState<"all" | Category>("all");
+  const [active, setActive] = useState<Photo | null>(null);
+  const items = filter === "all" ? ITEMS : ITEMS.filter((i) => i.category === filter);
 
   return (
-    <section id="portfolio" className="py-20 lg:py-32 bg-background" data-testid="portfolio-section">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-16">
-          <span ref={headerRef} className="text-primary font-accent uppercase tracking-wider text-sm font-semibold reveal">
-            Our Portfolio
-          </span>
-          <h2 
-            ref={subtitleRef}
-            className="text-4xl lg:text-6xl font-display font-bold text-foreground mt-4 reveal"
-            data-testid="portfolio-title"
-          >
-            Showcase of <span className="text-gradient">Excellence</span>
-          </h2>
-          <p 
-            ref={descriptionRef}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 reveal"
-            data-testid="portfolio-description"
-          >
-            Explore our portfolio of world-class events that have set new standards in the industry.
-          </p>
+    <section id="portfolio" className="section" data-testid="portfolio-section" aria-labelledby="portfolio-title">
+      <div className="wrap">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 id="portfolio-title" className="h-section" data-testid="portfolio-title">
+              Event portfolio
+            </h2>
+            <p className="lede mt-5" data-testid="portfolio-description">
+              Weddings, corporate evenings and concerts we have planned and lit.
+            </p>
+          </div>
+          <div className="filters" role="group" aria-label="Filter by event type" data-testid="portfolio-filters">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                className="chip"
+                aria-pressed={filter === f.key}
+                onClick={() => setFilter(f.key)}
+                data-testid={`filter-${f.key}`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
         </div>
-        
-        {/* Filter Buttons */}
-        <div ref={filtersRef} className="flex flex-wrap justify-center gap-4 mb-12 reveal" data-testid="portfolio-filters">
-          {filters.map((filter) => (
-            <Button
-              key={filter.key}
-              onClick={() => setActiveFilter(filter.key)}
-              className={`px-6 py-2 rounded-full font-semibold transition-all ${
-                activeFilter === filter.key
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-card text-foreground hover:bg-primary hover:text-primary-foreground'
-              }`}
-              data-testid={`filter-${filter.key}`}
-            >
-              {filter.label}
-            </Button>
-          ))}
-        </div>
-        
-        {/* Portfolio Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="portfolio-grid">
-          {filteredItems.map((item, index) => (
-            <div 
+
+        <div className="gallery mt-12" data-testid="portfolio-grid">
+          {items.map((item, index) => (
+            <button
               key={item.id}
-              className="gallery-item cursor-pointer"
-              onClick={() => setLightboxImage({ src: item.image, alt: item.title })}
+              type="button"
+              onClick={() => setActive(item.photo)}
+              aria-label={`Enlarge photo: ${item.photo.alt}`}
               data-testid={`portfolio-item-${item.id}`}
             >
-              <div className="relative group overflow-hidden rounded-2xl">
-                <img 
-                  src={item.image} 
-                  alt={item.title}
-                  className="w-full h-64 object-cover transition-transform group-hover:scale-110"
+              <span className="frame block">
+                <img
+                  src={item.photo.small}
+                  srcSet={`${item.photo.small} 640w, ${item.photo.large} 1280w`}
+                  sizes={index % 6 === 0 || index % 6 === 5 ? "(min-width: 1024px) 620px, (min-width: 640px) 45vw, 100vw" : "(min-width: 1024px) 300px, (min-width: 640px) 45vw, 100vw"}
+                  width={640}
+                  height={427}
+                  alt=""
                   loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
-                  <div className="text-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm">{item.subtitle}</p>
-                    <i className="fas fa-expand text-2xl mt-4"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </span>
+            </button>
           ))}
         </div>
       </div>
 
-      <Lightbox
-        isOpen={!!lightboxImage}
-        imageSrc={lightboxImage?.src || ''}
-        imageAlt={lightboxImage?.alt || ''}
-        onClose={() => setLightboxImage(null)}
-      />
+      <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
+        <DialogContent className="max-w-5xl border-0 bg-transparent p-0 shadow-none sm:rounded-none" data-testid="portfolio-lightbox">
+          <DialogTitle className="sr-only">Enlarged event photo</DialogTitle>
+          <DialogDescription className="sr-only">{active?.alt}</DialogDescription>
+          {active && <img className="lightbox-img" src={active.large} alt={active.alt} />}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

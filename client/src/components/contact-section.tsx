@@ -1,330 +1,169 @@
-import { useState } from 'react';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
+import { useRef, useState } from "react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { SocialLinks } from "@/components/social-icon";
+import { BrochureDownload } from "@/components/brochure-download";
+import { SITE, sendLead } from "@/lib/site";
+
+type Status = { kind: "idle" | "sending" } | { kind: "ok" | "error"; text: string };
+
+const RATE_LIMIT_MS = 30_000;
 
 export function ContactSection() {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    eventType: '',
-    message: ''
-  });
-  const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
-  const RATE_LIMIT_DELAY = 30000; // 30 seconds between submissions
+  const formRef = useRef<HTMLFormElement>(null);
+  const lastSent = useRef(0);
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const sending = status.kind === "sending";
 
-  const headerRef = useScrollReveal<HTMLSpanElement>();
-  const subtitleRef = useScrollReveal<HTMLHeadingElement>(100);
-  const descriptionRef = useScrollReveal<HTMLParagraphElement>(200);
-  const formRef = useScrollReveal<HTMLDivElement>(300);
-  const infoRef = useScrollReveal<HTMLDivElement>(400);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    
-    // Rate limiting check
-    const currentTime = Date.now();
-    if (currentTime - lastSubmissionTime < RATE_LIMIT_DELAY) {
-      const remainingTime = Math.ceil((RATE_LIMIT_DELAY - (currentTime - lastSubmissionTime)) / 1000);
-      toast({
-        title: 'Please wait',
-        description: `Please wait ${remainingTime} seconds before submitting again.`,
-        variant: 'destructive',
-      });
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    if (data.get("_honey")) return; // bots fill the hidden field
+
+    const wait = RATE_LIMIT_MS - (Date.now() - lastSent.current);
+    if (wait > 0) {
+      setStatus({ kind: "error", text: `Your last request just went through. You can send another in ${Math.ceil(wait / 1000)} seconds.` });
       return;
     }
 
-    setIsSubmitting(true);
-
-    // Create a hidden form for FormSubmit submission
-    const form = document.createElement('form');
-    form.action = 'https://formsubmit.co/hello@thriiievents.com';
-    form.method = 'POST';
-    form.style.display = 'none';
-
-    // Add FormSubmit configuration
-    const fields = [
-      { name: '_subject', value: 'New Contact Form Submission - THRIII Events' },
-      { name: '_captcha', value: 'false' },
-      { name: '_template', value: 'table' },
-      { name: '_next', value: window.location.href },
-      { name: '_cc', value: 'hello@thriiievents.com' },
-      { name: 'First Name', value: formData.firstName },
-      { name: 'Last Name', value: formData.lastName },
-      { name: 'Email', value: formData.email },
-      { name: 'Phone', value: formData.phone },
-      { name: 'Event Type', value: formData.eventType },
-      { name: 'Project Details', value: formData.message }
-    ];
-
-    fields.forEach(field => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = field.name;
-      input.value = field.value;
-      form.appendChild(input);
+    setStatus({ kind: "sending" });
+    const ok = await sendLead({
+      _subject: "New contact form submission - THRIII Events",
+      _cc: SITE.email,
+      "First name": String(data.get("firstName") ?? ""),
+      "Last name": String(data.get("lastName") ?? ""),
+      Email: String(data.get("email") ?? ""),
+      Phone: String(data.get("phone") ?? ""),
+      "Event type": String(data.get("eventType") ?? ""),
+      "Project details": String(data.get("message") ?? ""),
     });
 
-    // Set success state before submission
-    setLastSubmissionTime(currentTime);
-    toast({
-      title: 'Message Sent Successfully!',
-      description: 'Thank you for your inquiry. We will get back to you within 2 hours during business hours.',
-    });
-    
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      eventType: '',
-      message: ''
-    });
-
-    // Submit the form (this will cause a redirect, but we've already shown success)
-    document.body.appendChild(form);
-    form.submit();
-    
-    setIsSubmitting(false);
-  };
+    if (ok) {
+      lastSent.current = Date.now();
+      form.reset();
+      setStatus({ kind: "ok", text: "Your project details are in. We reply within 2 hours on business days." });
+    } else {
+      setStatus({
+        kind: "error",
+        text: `We could not send your request. Check your connection and try again, or email ${SITE.email}.`,
+      });
+    }
+  }
 
   return (
-    <section id="contact" className="py-20 lg:py-32 bg-background relative overflow-hidden" data-testid="contact-section">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="floating-particles">
-          <div className="particle w-4 h-4 animate-float" style={{ left: '20%', top: '10%', animationDelay: '0s' }}></div>
-          <div className="particle w-2 h-2 animate-float" style={{ left: '70%', top: '30%', animationDelay: '2s' }}></div>
-          <div className="particle w-3 h-3 animate-float" style={{ left: '40%', top: '70%', animationDelay: '4s' }}></div>
-          <div className="particle w-1 h-1 animate-float" style={{ left: '80%', top: '90%', animationDelay: '1s' }}></div>
-        </div>
-      </div>
-      
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <span ref={headerRef} className="text-primary font-accent uppercase tracking-wider text-sm font-semibold reveal">
-            Get In Touch
-          </span>
-          <h2 
-            ref={subtitleRef}
-            className="text-4xl lg:text-6xl font-display font-bold text-foreground mt-4 reveal"
-            data-testid="contact-title"
-          >
-            Let's Create Something <span className="text-gradient">Extraordinary</span>
+    <section id="contact" className="section" data-testid="contact-section" aria-labelledby="contact-title">
+      <div className="wrap">
+        <div className="max-w-3xl">
+          <h2 id="contact-title" className="h-section" data-testid="contact-title">
+            Tell us about your event
           </h2>
-          <p 
-            ref={descriptionRef}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 reveal"
-            data-testid="contact-description"
-          >
-            Ready to transform your vision into an unforgettable experience? Contact us today and let's start planning your next event.
+          <p className="lede mt-5" data-testid="contact-description">
+            Send the date, the venue and what you have in mind. We reply within 2 hours on business days and within 24
+            hours on weekends.
           </p>
         </div>
-        
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Contact Form */}
-          <div ref={formRef} className="reveal" data-testid="contact-form">
-            <form onSubmit={handleSubmit} className="form-glow space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="firstName" className="block text-sm font-semibold text-foreground mb-2">
-                    First Name
-                  </Label>
-                  <Input
-                    id="firstName"
-                    type="text"
-                    required
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
-                    className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-                    placeholder="John"
-                    data-testid="input-firstName"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName" className="block text-sm font-semibold text-foreground mb-2">
-                    Last Name
-                  </Label>
-                  <Input
-                    id="lastName"
-                    type="text"
-                    required
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-                    placeholder="Doe"
-                    data-testid="input-lastName"
-                  />
-                </div>
+
+        <div className="split mt-10">
+          <form ref={formRef} onSubmit={onSubmit} action={`https://formsubmit.co/${SITE.email}`} method="POST" className="grid gap-5" data-testid="contact-form" aria-busy={sending}>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="field">
+                <label htmlFor="firstName">First name</label>
+                <input id="firstName" name="firstName" className="control" type="text" required autoComplete="given-name" data-testid="input-firstName" />
               </div>
-              
-              <div>
-                <Label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-                  Email Address
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-                  placeholder="john@company.com"
-                  data-testid="input-email"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
-                  Phone Number
-                </Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground"
-                  placeholder="+1 (555) 123-4567"
-                  data-testid="input-phone"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="eventType" className="block text-sm font-semibold text-foreground mb-2">
-                  Event Type
-                </Label>
-                <Select value={formData.eventType} onValueChange={(value) => handleInputChange('eventType', value)}>
-                  <SelectTrigger className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground" data-testid="select-eventType">
-                    <SelectValue placeholder="Select Event Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="corporate">Corporate Event</SelectItem>
-                    <SelectItem value="wedding">Wedding</SelectItem>
-                    <SelectItem value="concert">Concert/Festival</SelectItem>
-                    <SelectItem value="fashion">Fashion Show</SelectItem>
-                    <SelectItem value="private">Private Party</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              
-              
-              <div>
-                <Label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
-                  Project Details
-                </Label>
-                <Textarea
-                  id="message"
-                  required
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-foreground resize-none"
-                  placeholder="Tell us about your vision, event date, location, and any specific requirements..."
-                  data-testid="textarea-message"
-                />
-              </div>
-              
-              <Button 
-                type="submit"
-                disabled={isSubmitting || (Date.now() - lastSubmissionTime < RATE_LIMIT_DELAY)}
-                className="w-full bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:glow-effect transition-all animate-glow disabled:opacity-50"
-                data-testid="button-submit"
-              >
-                {isSubmitting ? 'Sending...' : 
-                 (Date.now() - lastSubmissionTime < RATE_LIMIT_DELAY) ? 
-                 `Wait ${Math.ceil((RATE_LIMIT_DELAY - (Date.now() - lastSubmissionTime)) / 1000)}s` : 
-                 'Start Your Project'} 
-                {!isSubmitting && (Date.now() - lastSubmissionTime >= RATE_LIMIT_DELAY) && <i className="fas fa-arrow-right ml-2"></i>}
-              </Button>
-            </form>
-          </div>
-          
-          {/* Contact Information */}
-          <div ref={infoRef} className="space-y-8 reveal" data-testid="contact-info">
-            <div>
-              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">Get in Touch</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                    <i className="fas fa-phone text-primary-foreground"></i>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">Phone</div>
-                    <div className="text-muted-foreground">+971 50 3321 363</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                    <i className="fas fa-envelope text-primary-foreground"></i>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">Email</div>
-                    <div className="text-muted-foreground">hello@thriiievents.com</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                    <i className="fas fa-map-marker-alt text-primary-foreground"></i>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">Location</div>
-                    <div className="text-muted-foreground">
-                     AJMAN FREEZONE, SHEIKH RASHID BIN SAEED AL MAKTOUM STREET, AJMAN, U.A.E
-                  </div>
-                  </div>
-                </div>
+              <div className="field">
+                <label htmlFor="lastName">Last name</label>
+                <input id="lastName" name="lastName" className="control" type="text" required autoComplete="family-name" data-testid="input-lastName" />
               </div>
             </div>
-            
-            <div>
-              <h3 className="text-2xl font-display font-semibold text-foreground mb-6">Follow Us</h3>
-              <div className="flex space-x-4" data-testid="social-links">
-                <a href="https://www.instagram.com/thriiievents/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/thriii-events-fz-llc-344307386/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-linkedin"></i>
-                </a>
-                <a href="https://www.tiktok.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-tiktok"></i>
-                </a>
-                <a href="https://www.youtube.com/@THRIIIEVENTSFZLLC" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-youtube"></i>
-                </a>
-                  <a href="https://www.facebook.com/profile.php?id=61581765570460" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://x.com/thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">
-                  <i className="fab fa-x"></i>
-                </a>
-                <a href="https://www.threads.com/@thriiievents" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all">  
-                  <i class="fa-brands fa-meta"></i>
-                </a>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="field">
+                <label htmlFor="email">Email address</label>
+                <input id="email" name="email" className="control" type="email" required autoComplete="email" data-testid="input-email" />
+              </div>
+              <div className="field">
+                <label htmlFor="phone">Phone number</label>
+                <input id="phone" name="phone" className="control" type="tel" autoComplete="tel" data-testid="input-phone" />
               </div>
             </div>
-            
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h4 className="font-semibold text-foreground mb-3">Quick Response Guarantee</h4>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                We understand that timing is crucial for events. That's why we guarantee a response within 2 hours during business hours and 24 hours on weekends.
-              </p>
+            <div className="field">
+              <label htmlFor="eventType">Event type</label>
+              <select id="eventType" name="eventType" className="control" defaultValue="" required data-testid="select-eventType">
+                <option value="" disabled>
+                  Choose an event type
+                </option>
+                <option>Corporate event</option>
+                <option>Wedding</option>
+                <option>Concert or festival</option>
+                <option>Fashion show</option>
+                <option>Private party</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="message">Project details</label>
+              <textarea
+                id="message"
+                name="message"
+                className="control"
+                required
+                rows={4}
+                placeholder="Event date, venue, guest count and any special requirements"
+                data-testid="textarea-message"
+              />
+            </div>
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
+
+            <div>
+              <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={sending} data-testid="button-submit">
+                {sending ? "Sending…" : SITE.mainAction}
+              </button>
+            </div>
+
+            <div aria-live="polite" role="status">
+              {(status.kind === "ok" || status.kind === "error") && (
+                <p className="form-status" data-kind={status.kind}>
+                  {status.text}
+                </p>
+              )}
+            </div>
+          </form>
+
+          <div data-testid="contact-info">
+            <ul className="info-list">
+              <li>
+                <span>Phone</span>
+                <a href={SITE.phoneHref} className="link-draw justify-self-start">
+                  <Phone size={16} className="mr-2 inline -translate-y-px" aria-hidden="true" />
+                  {SITE.phoneDisplay}
+                </a>
+              </li>
+              <li>
+                <span>Email</span>
+                <a href={`mailto:${SITE.email}`} className="link-draw justify-self-start">
+                  <Mail size={16} className="mr-2 inline -translate-y-px" aria-hidden="true" />
+                  {SITE.email}
+                </a>
+              </li>
+              <li>
+                <span>Studio</span>
+                <address className="not-italic">
+                  <MapPin size={16} className="mr-2 inline -translate-y-px" aria-hidden="true" />
+                  {SITE.address}
+                </address>
+              </li>
+            </ul>
+
+            <div className="mt-8 flex flex-col gap-6">
+              <SocialLinks />
+              <div>
+                <BrochureDownload>
+                  <button type="button" className="btn btn-ghost">
+                    Download brochure
+                  </button>
+                </BrochureDownload>
+              </div>
             </div>
           </div>
         </div>
