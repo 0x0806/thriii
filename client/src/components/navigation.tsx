@@ -145,6 +145,9 @@ export function Navigation() {
               Download brochure
             </button>
           </BrochureDownload>
+          <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-ghost" data-testid="mobile-nav-whatsapp">
+            Chat on WhatsApp
+          </a>
           <a href="#contact" className="btn btn-primary" onClick={() => setOpen(false)} data-testid="mobile-nav-contact">
             {SITE.mainAction}
           </a>

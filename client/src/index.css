@@ -106,9 +106,6 @@ img {
     align-items: center;
     padding-block: clamp(56px, 8svh, 96px);
   }
-  .section > .wrap {
-    width: 100%;
-  }
   /* every two-column section shares the same two lines */
   .split {
     display: grid;
@@ -297,9 +294,6 @@ img {
   @media (min-width: 1024px) {
     .nav-links {
       display: flex;
-    }
-    .nav-burger {
-      display: none !important;
     }
   }
   .nav-end {
@@ -512,11 +506,8 @@ img {
     display: grid;
     gap: 32px;
   }
-  @media (min-width: 1024px) {
-    .services-photo {
-      position: sticky;
-      top: calc(var(--nav-h) + 24px);
-    }
+  .services-photo .frame {
+    aspect-ratio: 4 / 3;
   }
   .frame {
     overflow: hidden;
@@ -851,6 +842,19 @@ img {
     box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.6);
     transition: transform 0.25s var(--ease), box-shadow 0.25s;
   }
+  @media (max-width: 639px) {
+    .wa {
+      display: none;
+    }
+    .socials {
+      gap: 6px;
+    }
+  }
+  .wa[data-hidden="true"] {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
   .wa:hover {
     transform: translateY(-2px);
     box-shadow: 0 14px 28px -8px rgba(0, 0, 0, 0.7);
@@ -890,18 +894,51 @@ img {
   html {
     scroll-behavior: auto;
   }
+  /* no movement, but colour feedback stays */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-delay: 0s !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0s !important;
+    animation: none;
+    scroll-behavior: auto;
+  }
+  .btn:hover,
+  .btn:active,
+  .chip:hover,
+  .chip:active,
+  .socials a:hover,
+  .wa:hover,
+  .wa:active,
+  .gallery button:hover,
+  .service-list li:hover {
+    transform: none;
+    padding-left: 0;
+  }
+  .frame:hover img {
+    transform: none;
+  }
+  .mobile-menu {
+    transition: opacity 0.15s linear, visibility 0s 0.15s;
+    transform: none;
+  }
+  .mobile-menu[data-open="true"] {
+    transition-delay: 0s;
   }
   .statement .w {
     color: var(--foreground);
   }
   .statement .w[data-gold="true"] {
     color: var(--primary);
+  }
+}
+
+/* services photo stays in view beside the list on desktop */
+@media (min-width: 1024px) {
+  .services-photo {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+  }
+  .services-photo .frame {
+    aspect-ratio: auto;
+    height: min(640px, calc(100svh - var(--nav-h) - 96px));
   }
 }

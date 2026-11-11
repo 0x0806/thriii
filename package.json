@@ -1,8 +1,7 @@
 {
-  "name": "rest-express",
+  "name": "thriii-events",
   "version": "1.0.0",
   "type": "module",
-  "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
@@ -107,5 +106,14 @@
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
+  },
+  "description": "Marketing site for THRIII Events: event management and lighting design in Ajman, UAE.",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0x0806/thriii.git"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

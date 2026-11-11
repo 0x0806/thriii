@@ -19,5 +19,6 @@ Every push to `main` runs `.github/workflows/pages.yml`: type check, `vite build
 - Repo setting: **Settings > Pages > Source = GitHub Actions**.
 - The build uses a relative base (`base: "./"`), so it works at the custom domain (`client/public/CNAME`) and under `github.io/thriii/`.
 - Reference files in `client/public` through `asset()` from `client/src/lib/site.ts`, never a leading `/`.
+- SEO files: `robots.txt`, `manifest.webmanifest` and `.well-known/security.txt` live in `client/public`; `sitemap.xml` is generated at build time by `vite.config.ts` (lastmod = build date). Edit `SITE_URL` there if the domain changes.
 - Forms post to FormSubmit (`hello@thriiievents.com`); the address must be confirmed once with FormSubmit.
 - Photographs are stand-ins (Unsplash, Wikimedia Commons). Replace them in `client/src/assets/photos` and update `client/src/lib/photos.ts` and the credits dialog in `footer.tsx`.

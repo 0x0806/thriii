@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 import { SocialLinks } from "@/components/social-icon";
 import { BrochureDownload } from "@/components/brochure-download";
 import { SITE, sendLead } from "@/lib/site";
@@ -137,6 +138,13 @@ export function ContactSection() {
                 <a href={SITE.phoneHref} className="link-draw justify-self-start">
                   <Phone size={16} className="mr-2 inline -translate-y-px" aria-hidden="true" />
                   {SITE.phoneDisplay}
+                </a>
+              </li>
+              <li>
+                <span>WhatsApp</span>
+                <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer" className="link-draw justify-self-start">
+                  <FaWhatsapp size={16} className="mr-2 inline -translate-y-px" aria-hidden="true" />
+                  Chat with us
                 </a>
               </li>
               <li>

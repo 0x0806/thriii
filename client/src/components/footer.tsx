@@ -28,7 +28,7 @@ const CREDITS = [
 
 export function Footer() {
   return (
-    <footer className="site-footer" data-testid="footer">
+    <footer id="site-footer" className="site-footer" data-testid="footer">
       <div className="wrap">
         <div className="footer-grid">
           <div data-testid="footer-logo">

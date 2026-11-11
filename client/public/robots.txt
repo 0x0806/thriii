@@ -1,4 +1,9 @@
+# THRIII Events
 User-agent: *
 Allow: /
+# Not useful in search: the error page, and the brochure PDF, which is offered through the download form
+Disallow: /404.html
+Disallow: /brochure.pdf
+Disallow: /LOGO.jpg
 
 Sitemap: https://thriiievents.com/sitemap.xml

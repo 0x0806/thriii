@@ -49,7 +49,7 @@ export function ServicesSection() {
           </div>
 
           <div className="services-photo">
-            <div className="frame" style={{ aspectRatio: "4 / 5" }}>
+            <div className="frame">
               <img
                 src={p.large}
                 width={1280}
