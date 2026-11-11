@@ -40,7 +40,7 @@ jobs:
           grep -q "<loc>https://thriiievents.com/</loc>" "$out/sitemap.xml"
           grep -q "^Sitemap: https://thriiievents.com/sitemap.xml" "$out/robots.txt"
           grep -q 'rel="canonical"' "$out/index.html"
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist/public
 
